@@ -16,15 +16,18 @@ $(document).ready(function(){
     });
     
     $("#guessButton").click(function() {
-        guessCounter++;
-        $('#count').text(guessCounter);
-        var userGuess = parseInt($("#userGuess").val());
-        $('#guessList').append('<li>'+userGuess+'</li>');
-        registerGuess(userGuess);
-    })
+        onUserGuess();
+    });
+    
+    $(document).keypress(function(event) {
+        if  (13 == event.which) {
+            onUserGuess();
+        }
+    });
 });
 
 var solution;
+var userGuess;
 var guesses = [];
 var guessCounter = 0;
 
@@ -45,11 +48,18 @@ function registerGuess(intGuess)
 
 function analyzeGuess(intGuess) {
     var diff = Math.abs((intGuess)-(solution));
-//    alert('intGuess: ' + intGuess + ' solution: ' + solution + ' diff: ' + diff);
     if (0 == diff) { $('#feedback').text("Correct!"); }
     if (50 <= diff) { $('#feedback').text("Ice cold!"); }
     if (30 <= diff && 50 > diff) { $('#feedback').text("Cold!"); }
     if (20 <= diff && 30 > diff) { $('#feedback').text("Warm!"); }
     if (10 <= diff && 20 > diff) { $('#feedback').text("Hot!"); }
     if (1 <= diff && 10 > diff) { $('#feedback').text("Very Hot"); }
+}
+
+function onUserGuess() {
+    guessCounter++;
+    $('#count').text(guessCounter);
+        userGuess = parseInt($("#userGuess").val());
+        $('#guessList').append('<li>'+userGuess+'</li>');
+        registerGuess(userGuess);
 }
