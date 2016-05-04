@@ -2,20 +2,20 @@
 $(document).ready(function(){
     newGame();
 	/*--- Display information modal box ---*/
-  	$(".what").click(function(){
-    	$(".overlay").fadeIn(1000);
+  	$('.what').click(function(){
+    	$('.overlay').fadeIn(1000);
   	});
 
   	/*--- Hide information modal box ---*/
-  	$("a.close").click(function(){
-  		$(".overlay").fadeOut(1000);
+  	$('a.close').click(function(){
+  		$('.overlay').fadeOut(1000);
   	});
     
-    $(".new").click(function(){
+    $('.new').click(function(){
         newGame();
     });
     
-    $("#guessButton").click(function() {
+    $('#guessButton').click(function() {
         onUserGuess();
     });
     
@@ -28,12 +28,16 @@ $(document).ready(function(){
 
 var solution;
 var userGuess;
-var guesses = [];
 var guessCounter = 0;
 
 function newGame() {
     solution = getRandomIntInclusive(1, 100);
-    guesses = [];
+    userGuess = undefined;
+    guessCounter = 0;
+    $('#count').text(guessCounter);
+    $('#feedback').text("Make your Guess!");
+    $('#userGuess').val("");
+    $('#guessList').empty();
 }
 
 function getRandomIntInclusive(min, max) {
@@ -42,7 +46,6 @@ function getRandomIntInclusive(min, max) {
 
 function registerGuess(intGuess)
 {
-    guesses.push(intGuess);
     analyzeGuess(intGuess);
 }
 
@@ -57,9 +60,19 @@ function analyzeGuess(intGuess) {
 }
 
 function onUserGuess() {
-    guessCounter++;
-    $('#count').text(guessCounter);
-        userGuess = parseInt($("#userGuess").val());
+    userGuess = parseInt($("#userGuess").val());
+    if (isValid()) {
+        guessCounter++;
+        $('#count').text(guessCounter);
         $('#guessList').append('<li>'+userGuess+'</li>');
         registerGuess(userGuess);
+    } else {
+        alert("Please enter a number from 1-100.")
+    }
+    $('#userGuess').val("");
+    
+}
+
+function isValid() {
+    return (NaN != userGuess && undefined != userGuess && 1 <= userGuess && 100 >= userGuess);
 }
